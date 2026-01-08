@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../firebase_options.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -25,7 +26,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     try {
       // Trigger the Google Sign-In flow
       final GoogleSignInAccount? googleUser = await GoogleSignIn(
-        clientId: '201170266816-3j7ukhoqla273feootflvmeuvq6qc5gm.apps.googleusercontent.com',
+        clientId: DefaultFirebaseOptions.ios.iosClientId,
       ).signIn();
 
       if (googleUser == null) {

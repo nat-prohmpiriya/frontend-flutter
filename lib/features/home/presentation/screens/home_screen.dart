@@ -1,8 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/auth/auth_provider.dart';
+import '../../../../core/router/route_names.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -13,101 +14,59 @@ class HomeScreen extends ConsumerWidget {
     final user = ref.watch(currentUserProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('TaleLingo'),
-        actions: [
-          IconButton(
-            icon: CircleAvatar(
-              radius: 16,
-              backgroundImage: user?.photoURL != null
-                  ? NetworkImage(user!.photoURL!)
-                  : null,
-              child: user?.photoURL == null
-                  ? const Icon(Icons.person, size: 20)
-                  : null,
-            ),
-            onPressed: () {
-              // TODO: Navigate to profile
-            },
-          ),
-          const SizedBox(width: 8),
-        ],
-      ),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Welcome message
+              // Header
               Text(
-                'Welcome back,',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-              ),
-              Text(
-                user?.displayName ?? 'Learner',
+                'Welcome to TaleLingo',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const SizedBox(height: 24),
-              // Mode selection cards
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  children: [
-                    _ModeCard(
-                      icon: Icons.auto_stories,
-                      title: 'Stories',
-                      subtitle: 'Read & Learn',
-                      color: AppColors.primary,
-                      onTap: () {
-                        // TODO: Navigate to library
-                      },
+              const SizedBox(height: 8),
+              Text(
+                'Choose your mode',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: AppColors.textSecondary,
                     ),
-                    _ModeCard(
-                      icon: Icons.flash_on,
-                      title: 'Quick Read',
-                      subtitle: 'Short stories',
-                      color: AppColors.orange,
-                      onTap: () {
-                        // TODO: Navigate to for-you
-                      },
-                    ),
-                    _ModeCard(
-                      icon: Icons.spellcheck,
-                      title: 'Vocabulary',
-                      subtitle: 'Review words',
-                      color: AppColors.secondary,
-                      onTap: () {
-                        // TODO: Navigate to vocabulary
-                      },
-                    ),
-                    _ModeCard(
-                      icon: Icons.bar_chart,
-                      title: 'Statistics',
-                      subtitle: 'Track progress',
-                      color: AppColors.purple,
-                      onTap: () {
-                        // TODO: Navigate to statistics
-                      },
-                    ),
-                  ],
-                ),
               ),
-              // Logout button (temporary for testing)
-              Center(
-                child: TextButton.icon(
-                  onPressed: () async {
-                    await FirebaseAuth.instance.signOut();
-                  },
-                  icon: const Icon(Icons.logout),
-                  label: const Text('Sign Out'),
-                ),
+              const SizedBox(height: 24),
+              // Summary Stats Card
+              _SummaryStats(user: user),
+              const SizedBox(height: 24),
+              // Mode Cards Grid
+              _ModeCard(
+                icon: Icons.auto_awesome,
+                title: 'For You',
+                description: 'Personalized stories based on your level',
+                gradient: [Color(0xFFEC4899), Color(0xFFF43F5E)],
+                onTap: () {
+                  // TODO: Navigate to for-you
+                },
+              ),
+              const SizedBox(height: 16),
+              _ModeCard(
+                icon: Icons.menu_book,
+                title: 'Library',
+                description: 'Browse all stories',
+                gradient: [Color(0xFF8B5CF6), Color(0xFF7C3AED)],
+                onTap: () {
+                  context.go(RouteNames.library);
+                },
+              ),
+              const SizedBox(height: 16),
+              _ModeCard(
+                icon: Icons.bookmark,
+                title: 'My Words',
+                description: 'Review saved vocabulary',
+                gradient: [Color(0xFF10B981), Color(0xFF059669)],
+                onTap: () {
+                  // TODO: Navigate to my-words
+                },
               ),
             ],
           ),
@@ -117,56 +76,247 @@ class HomeScreen extends ConsumerWidget {
   }
 }
 
+class _SummaryStats extends StatelessWidget {
+  final dynamic user;
+
+  const _SummaryStats({required this.user});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Your Progress',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              TextButton(
+                onPressed: () {
+                  // TODO: Navigate to statistics
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'View Details',
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Icon(
+                      Icons.chevron_right,
+                      size: 20,
+                      color: AppColors.primary,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          // Stats Grid
+          Row(
+            children: [
+              Expanded(
+                child: _StatItem(
+                  icon: Icons.local_fire_department,
+                  value: '0',
+                  unit: 'days',
+                  label: 'Streak',
+                  color: AppColors.orange,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _StatItem(
+                  icon: Icons.monetization_on,
+                  value: '0',
+                  unit: '',
+                  label: 'Coins',
+                  color: AppColors.secondary,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _StatItem(
+                  icon: Icons.school,
+                  value: 'A1',
+                  unit: '',
+                  label: 'Level',
+                  color: AppColors.primary,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatItem extends StatelessWidget {
+  final IconData icon;
+  final String value;
+  final String unit;
+  final String label;
+  final Color color;
+
+  const _StatItem({
+    required this.icon,
+    required this.value,
+    required this.unit,
+    required this.label,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: color, size: 24),
+          const SizedBox(height: 8),
+          RichText(
+            text: TextSpan(
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+              children: [
+                TextSpan(text: value),
+                if (unit.isNotEmpty)
+                  TextSpan(
+                    text: ' $unit',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _ModeCard extends StatelessWidget {
   final IconData icon;
   final String title;
-  final String subtitle;
-  final Color color;
+  final String description;
+  final List<Color> gradient;
   final VoidCallback onTap;
 
   const _ModeCard({
     required this.icon,
     required this.title,
-    required this.subtitle,
-    required this.color,
+    required this.description,
+    required this.gradient,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            // Icon with gradient background
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: gradient,
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
-                child: Icon(icon, color: color, size: 28),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: gradient[0].withValues(alpha: 0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
-              const Spacer(),
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+              child: Icon(icon, color: Colors.white, size: 32),
+            ),
+            const SizedBox(width: 16),
+            // Text content
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    description,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.textSecondary,
-                    ),
-              ),
-            ],
-          ),
+            ),
+            // Arrow
+            Icon(
+              Icons.chevron_right,
+              color: AppColors.textSecondary,
+            ),
+          ],
         ),
       ),
     );

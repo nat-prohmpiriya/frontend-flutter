@@ -43,7 +43,7 @@ class HomeScreen extends ConsumerWidget {
                 icon: Icons.auto_awesome,
                 title: 'For You',
                 description: 'Personalized stories based on your level',
-                gradient: [Color(0xFFEC4899), Color(0xFFF43F5E)],
+                gradient: const [Color(0xFFEC4899), Color(0xFFF43F5E)],
                 onTap: () {
                   // TODO: Navigate to for-you
                 },
@@ -53,7 +53,7 @@ class HomeScreen extends ConsumerWidget {
                 icon: Icons.menu_book,
                 title: 'Library',
                 description: 'Browse all stories',
-                gradient: [Color(0xFF8B5CF6), Color(0xFF7C3AED)],
+                gradient: const [Color(0xFF8B5CF6), Color(0xFF7C3AED)],
                 onTap: () {
                   context.go(RouteNames.library);
                 },
@@ -63,7 +63,7 @@ class HomeScreen extends ConsumerWidget {
                 icon: Icons.bookmark,
                 title: 'My Words',
                 description: 'Review saved vocabulary',
-                gradient: [Color(0xFF10B981), Color(0xFF059669)],
+                gradient: const [Color(0xFF10B981), Color(0xFF059669)],
                 onTap: () {
                   // TODO: Navigate to my-words
                 },
@@ -114,7 +114,7 @@ class _SummaryStats extends StatelessWidget {
                 onPressed: () {
                   // TODO: Navigate to statistics
                 },
-                child: Row(
+                child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
@@ -124,7 +124,7 @@ class _SummaryStats extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     Icon(
                       Icons.chevron_right,
                       size: 20,
@@ -137,7 +137,7 @@ class _SummaryStats extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           // Stats Grid
-          Row(
+          const Row(
             children: [
               Expanded(
                 child: _StatItem(
@@ -148,7 +148,7 @@ class _SummaryStats extends StatelessWidget {
                   color: AppColors.orange,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(
                 child: _StatItem(
                   icon: Icons.monetization_on,
@@ -158,7 +158,7 @@ class _SummaryStats extends StatelessWidget {
                   color: AppColors.secondary,
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Expanded(
                 child: _StatItem(
                   icon: Icons.school,
@@ -223,7 +223,7 @@ class _StatItem extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
               color: AppColors.textSecondary,
             ),
@@ -312,7 +312,7 @@ class _ModeCard extends StatelessWidget {
               ),
             ),
             // Arrow
-            Icon(
+            const Icon(
               Icons.chevron_right,
               color: AppColors.textSecondary,
             ),

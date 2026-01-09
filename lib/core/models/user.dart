@@ -7,6 +7,7 @@ enum AuthProvider { google, facebook, email, phone }
 
 enum SubscriptionType { free, premium }
 
+// ignore: constant_identifier_names
 enum UserLevel { A1, A2, B1, B2 }
 
 @freezed

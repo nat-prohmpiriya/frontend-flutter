@@ -12,9 +12,8 @@ import 'route_names.dart';
 
 part 'app_router.g.dart';
 
-// Navigation keys for ShellRoute
+// Navigation key for root navigator
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 @riverpod
 GoRouter router(Ref ref) {

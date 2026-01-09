@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/router/route_names.dart';
 import '../../core/theme/app_colors.dart';
 
 /// Main shell with bottom navigation bar (mobile layout)
@@ -21,7 +20,7 @@ class MainShell extends StatelessWidget {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border(
+          border: const Border(
             top: BorderSide(
               color: AppColors.border,
               width: 1,

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../auth/auth_interceptor.dart';
+import '../env/env.dart';
 
 part 'api_client.g.dart';
 
@@ -96,7 +97,5 @@ class ApiClient {
 
 @riverpod
 ApiClient apiClient(Ref ref) {
-  // TODO: Replace with actual API base URL from environment
-  const baseUrl = 'http://localhost:3000/api';
-  return ApiClient(baseUrl: baseUrl);
+  return ApiClient(baseUrl: Env.apiBaseUrl);
 }

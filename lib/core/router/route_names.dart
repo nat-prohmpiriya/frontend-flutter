@@ -9,4 +9,5 @@ class RouteNames {
   static const profile = '/profile';
   static const statistics = '/statistics';
   static const vocabulary = '/vocabulary';
+  static const game = '/game';
 }

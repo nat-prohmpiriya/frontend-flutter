@@ -8,6 +8,7 @@ part 'api_client.g.dart';
 /// Dio API client with interceptors
 class ApiClient {
   final Dio _dio;
+  String? _authToken;
 
   ApiClient({required String baseUrl})
       : _dio = Dio(
@@ -32,6 +33,21 @@ class ApiClient {
   }
 
   Dio get dio => _dio;
+
+  /// Set the auth token for API requests
+  void setAuthToken(String token) {
+    _authToken = token;
+    _dio.options.headers['Authorization'] = 'Bearer $token';
+  }
+
+  /// Clear the auth token
+  void clearAuthToken() {
+    _authToken = null;
+    _dio.options.headers.remove('Authorization');
+  }
+
+  /// Get the current auth token
+  String? get authToken => _authToken;
 
   Future<Response<T>> get<T>(
     String path, {

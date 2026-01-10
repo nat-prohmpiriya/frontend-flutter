@@ -230,16 +230,16 @@ return $default(_that.id,_that.slug,_that.title,_that.language,_that.level,_that
 @JsonSerializable()
 
 class _Story implements Story {
-  const _Story({required this.id, required this.slug, required this.title, required this.language, required this.level, required this.category, final  List<String> tags = const [], required this.estimatedTime, required this.totalWords, required this.targetVocabulary, required this.coverImageUrl, final  List<Episode> episodes = const []}): _tags = tags,_episodes = episodes;
+  const _Story({required this.id, required this.slug, required this.title, this.language = 'en', this.level = 'A1', this.category = '', final  List<String> tags = const [], this.estimatedTime = 0, this.totalWords = 0, this.targetVocabulary = 0, this.coverImageUrl = '', final  List<Episode> episodes = const []}): _tags = tags,_episodes = episodes;
   factory _Story.fromJson(Map<String, dynamic> json) => _$StoryFromJson(json);
 
 @override final  String id;
 @override final  String slug;
 @override final  LocalizedText title;
-@override final  String language;
-@override final  String level;
+@override@JsonKey() final  String language;
+@override@JsonKey() final  String level;
 // A1, A2, B1, B2
-@override final  String category;
+@override@JsonKey() final  String category;
  final  List<String> _tags;
 @override@JsonKey() List<String> get tags {
   if (_tags is EqualUnmodifiableListView) return _tags;
@@ -247,10 +247,10 @@ class _Story implements Story {
   return EqualUnmodifiableListView(_tags);
 }
 
-@override final  int estimatedTime;
-@override final  int totalWords;
-@override final  int targetVocabulary;
-@override final  String coverImageUrl;
+@override@JsonKey() final  int estimatedTime;
+@override@JsonKey() final  int totalWords;
+@override@JsonKey() final  int targetVocabulary;
+@override@JsonKey() final  String coverImageUrl;
  final  List<Episode> _episodes;
 @override@JsonKey() List<Episode> get episodes {
   if (_episodes is EqualUnmodifiableListView) return _episodes;
@@ -538,11 +538,11 @@ return $default(_that.en,_that.th);case _:
 @JsonSerializable()
 
 class _LocalizedText implements LocalizedText {
-  const _LocalizedText({required this.en, required this.th});
+  const _LocalizedText({this.en = '', this.th = ''});
   factory _LocalizedText.fromJson(Map<String, dynamic> json) => _$LocalizedTextFromJson(json);
 
-@override final  String en;
-@override final  String th;
+@override@JsonKey() final  String en;
+@override@JsonKey() final  String th;
 
 /// Create a copy of LocalizedText
 /// with the given fields replaced by the non-null parameter values.

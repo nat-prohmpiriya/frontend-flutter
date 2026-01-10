@@ -9,14 +9,14 @@ abstract class Story with _$Story {
     required String id,
     required String slug,
     required LocalizedText title,
-    required String language,
-    required String level, // A1, A2, B1, B2
-    required String category,
+    @Default('en') String language,
+    @Default('A1') String level, // A1, A2, B1, B2
+    @Default('') String category,
     @Default([]) List<String> tags,
-    required int estimatedTime,
-    required int totalWords,
-    required int targetVocabulary,
-    required String coverImageUrl,
+    @Default(0) int estimatedTime,
+    @Default(0) int totalWords,
+    @Default(0) int targetVocabulary,
+    @Default('') String coverImageUrl,
     @Default([]) List<Episode> episodes,
   }) = _Story;
 
@@ -26,8 +26,8 @@ abstract class Story with _$Story {
 @freezed
 abstract class LocalizedText with _$LocalizedText {
   const factory LocalizedText({
-    required String en,
-    required String th,
+    @Default('') String en,
+    @Default('') String th,
   }) = _LocalizedText;
 
   factory LocalizedText.fromJson(Map<String, dynamic> json) =>

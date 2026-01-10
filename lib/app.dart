@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -18,6 +19,9 @@ class App extends ConsumerWidget {
         title: 'TaleLingo',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         home: const Scaffold(
           body: Center(child: CircularProgressIndicator()),
         ),
@@ -28,6 +32,9 @@ class App extends ConsumerWidget {
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
         themeMode: ThemeMode.system,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         routerConfig: router,
       ),
       data: (isDarkMode) => MaterialApp.router(
@@ -36,6 +43,9 @@ class App extends ConsumerWidget {
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
         themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         routerConfig: router,
       ),
     );

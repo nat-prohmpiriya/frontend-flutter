@@ -112,7 +112,7 @@ class _SummaryStats extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  // TODO: Navigate to statistics
+                  context.go(RouteNames.statistics);
                 },
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,

@@ -9,7 +9,7 @@ part of 'story.dart';
 _Story _$StoryFromJson(Map<String, dynamic> json) => _Story(
   id: json['id'] as String,
   slug: json['slug'] as String,
-  title: LocalizedText.fromJson(json['title'] as Map<String, dynamic>),
+  title: Map<String, String>.from(json['title'] as Map),
   language: json['language'] as String? ?? 'en',
   level: json['level'] as String? ?? 'A1',
   category: json['category'] as String? ?? '',
@@ -42,18 +42,9 @@ Map<String, dynamic> _$StoryToJson(_Story instance) => <String, dynamic>{
   'episodes': instance.episodes,
 };
 
-_LocalizedText _$LocalizedTextFromJson(Map<String, dynamic> json) =>
-    _LocalizedText(
-      en: json['en'] as String? ?? '',
-      th: json['th'] as String? ?? '',
-    );
-
-Map<String, dynamic> _$LocalizedTextToJson(_LocalizedText instance) =>
-    <String, dynamic>{'en': instance.en, 'th': instance.th};
-
 _Episode _$EpisodeFromJson(Map<String, dynamic> json) => _Episode(
   episodeNumber: (json['episodeNumber'] as num).toInt(),
-  title: LocalizedText.fromJson(json['title'] as Map<String, dynamic>),
+  title: Map<String, String>.from(json['title'] as Map),
   pages:
       (json['pages'] as List<dynamic>?)
           ?.map((e) => Page.fromJson(e as Map<String, dynamic>))
@@ -108,54 +99,58 @@ Map<String, dynamic> _$PageToJson(_Page instance) => <String, dynamic>{
 _VocabularyHighlight _$VocabularyHighlightFromJson(Map<String, dynamic> json) =>
     _VocabularyHighlight(
       word: json['word'] as String,
-      startIndex: (json['startIndex'] as num).toInt(),
-      endIndex: (json['endIndex'] as num).toInt(),
-      level: json['level'] as String?,
+      highlight: json['highlight'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$VocabularyHighlightToJson(
   _VocabularyHighlight instance,
-) => <String, dynamic>{
-  'word': instance.word,
-  'startIndex': instance.startIndex,
-  'endIndex': instance.endIndex,
-  'level': instance.level,
-};
+) => <String, dynamic>{'word': instance.word, 'highlight': instance.highlight};
 
 _WordTimestamp _$WordTimestampFromJson(Map<String, dynamic> json) =>
     _WordTimestamp(
       word: json['word'] as String,
-      startTime: (json['startTime'] as num).toDouble(),
-      endTime: (json['endTime'] as num).toDouble(),
+      start: (json['start'] as num).toDouble(),
+      end: (json['end'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$WordTimestampToJson(_WordTimestamp instance) =>
     <String, dynamic>{
       'word': instance.word,
-      'startTime': instance.startTime,
-      'endTime': instance.endTime,
+      'start': instance.start,
+      'end': instance.end,
     };
 
 _VocabularyDetail _$VocabularyDetailFromJson(Map<String, dynamic> json) =>
     _VocabularyDetail(
       word: json['word'] as String,
-      definition: json['definition'] as String,
-      partOfSpeech: json['partOfSpeech'] as String,
-      pronunciation: json['pronunciation'] as String?,
+      definition: json['definition'] as String?,
+      pos: json['pos'] as String? ?? '',
+      phonetic: json['phonetic'] as String? ?? '',
       audioUrl: json['audioUrl'] as String?,
       translations: (json['translations'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, e as String),
       ),
+      pronunciations: (json['pronunciations'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, e as String),
+      ),
+      example: json['example'] as String? ?? '',
+      exampleTranslations:
+          (json['exampleTranslations'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(k, e as String),
+          ),
     );
 
 Map<String, dynamic> _$VocabularyDetailToJson(_VocabularyDetail instance) =>
     <String, dynamic>{
       'word': instance.word,
       'definition': instance.definition,
-      'partOfSpeech': instance.partOfSpeech,
-      'pronunciation': instance.pronunciation,
+      'pos': instance.pos,
+      'phonetic': instance.phonetic,
       'audioUrl': instance.audioUrl,
       'translations': instance.translations,
+      'pronunciations': instance.pronunciations,
+      'example': instance.example,
+      'exampleTranslations': instance.exampleTranslations,
     };
 
 _MiniGame _$MiniGameFromJson(Map<String, dynamic> json) => _MiniGame(
@@ -174,20 +169,20 @@ Map<String, dynamic> _$MiniGameToJson(_MiniGame instance) => <String, dynamic>{
 
 _Question _$QuestionFromJson(Map<String, dynamic> json) => _Question(
   id: json['id'] as String,
-  questionText: json['questionText'] as String,
+  question: json['question'] as String,
   audioUrl: json['audioUrl'] as String?,
   options:
       (json['options'] as List<dynamic>?)?.map((e) => e as String).toList() ??
       const [],
-  correctIndex: (json['correctIndex'] as num).toInt(),
+  correctAnswer: json['correctAnswer'] as String,
   explanation: json['explanation'] as String?,
 );
 
 Map<String, dynamic> _$QuestionToJson(_Question instance) => <String, dynamic>{
   'id': instance.id,
-  'questionText': instance.questionText,
+  'question': instance.question,
   'audioUrl': instance.audioUrl,
   'options': instance.options,
-  'correctIndex': instance.correctIndex,
+  'correctAnswer': instance.correctAnswer,
   'explanation': instance.explanation,
 };

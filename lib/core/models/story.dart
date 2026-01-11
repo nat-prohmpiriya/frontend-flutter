@@ -8,7 +8,7 @@ abstract class Story with _$Story {
   const factory Story({
     required String id,
     required String slug,
-    required LocalizedText title,
+    required Map<String, String> title, // Changed from LocalizedText to Map
     @Default('en') String language,
     @Default('A1') String level, // A1, A2, B1, B2
     @Default('') String category,
@@ -24,21 +24,10 @@ abstract class Story with _$Story {
 }
 
 @freezed
-abstract class LocalizedText with _$LocalizedText {
-  const factory LocalizedText({
-    @Default('') String en,
-    @Default('') String th,
-  }) = _LocalizedText;
-
-  factory LocalizedText.fromJson(Map<String, dynamic> json) =>
-      _$LocalizedTextFromJson(json);
-}
-
-@freezed
 abstract class Episode with _$Episode {
   const factory Episode({
     required int episodeNumber,
-    required LocalizedText title,
+    required Map<String, String> title, // Changed from LocalizedText to Map
     @Default([]) List<Page> pages,
     @Default([]) List<VocabularyDetail> vocabularyDetails,
     MiniGame? miniGame,
@@ -67,9 +56,7 @@ abstract class Page with _$Page {
 abstract class VocabularyHighlight with _$VocabularyHighlight {
   const factory VocabularyHighlight({
     required String word,
-    required int startIndex,
-    required int endIndex,
-    String? level,
+    @Default(false) bool highlight,
   }) = _VocabularyHighlight;
 
   factory VocabularyHighlight.fromJson(Map<String, dynamic> json) =>
@@ -80,8 +67,8 @@ abstract class VocabularyHighlight with _$VocabularyHighlight {
 abstract class WordTimestamp with _$WordTimestamp {
   const factory WordTimestamp({
     required String word,
-    required double startTime,
-    required double endTime,
+    required double start,
+    required double end,
   }) = _WordTimestamp;
 
   factory WordTimestamp.fromJson(Map<String, dynamic> json) =>
@@ -92,11 +79,14 @@ abstract class WordTimestamp with _$WordTimestamp {
 abstract class VocabularyDetail with _$VocabularyDetail {
   const factory VocabularyDetail({
     required String word,
-    required String definition,
-    required String partOfSpeech,
-    String? pronunciation,
+    String? definition, // Optional - Next.js API doesn't provide this
+    @Default('') String pos, // Changed from partOfSpeech to match Next.js API
+    @Default('') String phonetic,
     String? audioUrl,
     Map<String, String>? translations,
+    Map<String, String>? pronunciations,
+    @Default('') String example,
+    Map<String, String>? exampleTranslations,
   }) = _VocabularyDetail;
 
   factory VocabularyDetail.fromJson(Map<String, dynamic> json) =>
@@ -118,10 +108,10 @@ abstract class MiniGame with _$MiniGame {
 abstract class Question with _$Question {
   const factory Question({
     required String id,
-    required String questionText,
+    required String question,
     String? audioUrl,
     @Default([]) List<String> options,
-    required int correctIndex,
+    required String correctAnswer,
     String? explanation,
   }) = _Question;
 

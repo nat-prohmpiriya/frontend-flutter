@@ -228,13 +228,12 @@ class VocabularyPanel extends StatelessWidget {
                                 ),
                       ),
 
-                      // Pronunciation
-                      if (vocab.pronunciation != null &&
-                          vocab.pronunciation!.isNotEmpty)
+                      // Phonetic (pronunciation)
+                      if (vocab.phonetic != null && vocab.phonetic!.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(top: 2),
                           child: Text(
-                            '/${vocab.pronunciation}/',
+                            '/${vocab.phonetic}/',
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
                                       color: AppColors.textSecondary,
@@ -253,16 +252,16 @@ class VocabularyPanel extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: _getPartOfSpeechColor(vocab.partOfSpeech)
+                    color: _getPartOfSpeechColor(vocab.pos)
                         .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    vocab.partOfSpeech,
+                    vocab.pos,
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
-                      color: _getPartOfSpeechColor(vocab.partOfSpeech),
+                      color: _getPartOfSpeechColor(vocab.pos),
                     ),
                   ),
                 ),
@@ -288,16 +287,17 @@ class VocabularyPanel extends StatelessWidget {
 
             const SizedBox(height: 12),
 
-            // Definition
-            Text(
-              vocab.definition,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: isDark
-                        ? AppColors.darkTextSecondary
-                        : AppColors.textSecondary,
-                    height: 1.5,
-                  ),
-            ),
+            // Definition (optional - may not be provided by API)
+            if (vocab.definition != null && vocab.definition!.isNotEmpty)
+              Text(
+                vocab.definition!,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: isDark
+                          ? AppColors.darkTextSecondary
+                          : AppColors.textSecondary,
+                      height: 1.5,
+                    ),
+              ),
 
             // Translation
             if (vocab.translations != null && vocab.translations!.isNotEmpty)

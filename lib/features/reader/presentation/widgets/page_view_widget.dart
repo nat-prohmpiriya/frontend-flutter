@@ -157,22 +157,89 @@ class PageViewWidget extends StatelessWidget {
     String text,
     List<story_model.VocabularyHighlight> highlights,
   ) {
-    // Sort highlights by start index
-    final sortedHighlights = List<story_model.VocabularyHighlight>.from(highlights)
-      ..sort((a, b) => a.startIndex.compareTo(b.startIndex));
+    // Filter only highlights that should be highlighted
+    final activeHighlights = highlights.where((h) => h.highlight).toList();
 
+    if (activeHighlights.isEmpty) {
+      // No highlights, show plain text
+      return Text(
+        text,
+        style: TextStyle(
+          fontSize: _getTextSize(),
+          height: 1.8,
+          color: Theme.of(context).brightness == Brightness.dark
+              ? AppColors.darkTextPrimary
+              : AppColors.textPrimary,
+        ),
+      );
+    }
+
+    // Build text with tappable words
     final spans = <InlineSpan>[];
-    int currentIndex = 0;
-
     final textColor = Theme.of(context).brightness == Brightness.dark
         ? AppColors.darkTextPrimary
         : AppColors.textPrimary;
+    final highlightColor = AppColors.primary;
 
-    for (final highlight in sortedHighlights) {
-      // Add text before this highlight
-      if (highlight.startIndex > currentIndex) {
+    // Simple word-based highlighting
+    // Split text by words and check each word
+    final words = text.split(RegExp(r'(\s+)'));
+    int charIndex = 0;
+
+    for (final word in words) {
+      if (word.trim().isEmpty) {
+        // Whitespace
         spans.add(TextSpan(
-          text: text.substring(currentIndex, highlight.startIndex),
+          text: word,
+          style: TextStyle(
+            fontSize: _getTextSize(),
+            height: 1.8,
+            color: textColor,
+          ),
+        ));
+        charIndex += word.length;
+        continue;
+      }
+
+      // Check if this word (case-insensitive) matches any highlight
+      final matchingHighlight = activeHighlights.firstWhere(
+        (h) => h.word.toLowerCase() == word.toLowerCase(),
+        orElse: () => const story_model.VocabularyHighlight(word: '', highlight: false),
+      );
+
+      if (matchingHighlight.highlight) {
+        // This is a vocabulary word - make it tappable
+        spans.add(WidgetSpan(
+          alignment: PlaceholderAlignment.baseline,
+          baseline: TextBaseline.alphabetic,
+          child: GestureDetector(
+            onTap: () => onWordTap(matchingHighlight.word),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 2),
+              decoration: BoxDecoration(
+                color: highlightColor.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(
+                  color: highlightColor.withValues(alpha: 0.3),
+                  width: 1,
+                ),
+              ),
+              child: Text(
+                word,
+                style: TextStyle(
+                  fontSize: _getTextSize(),
+                  height: 1.8,
+                  color: highlightColor,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+        ));
+      } else {
+        // Regular word
+        spans.add(TextSpan(
+          text: word,
           style: TextStyle(
             fontSize: _getTextSize(),
             height: 1.8,
@@ -180,50 +247,7 @@ class PageViewWidget extends StatelessWidget {
           ),
         ));
       }
-
-      // Add the highlighted word as a tappable span
-      final word = text.substring(highlight.startIndex, highlight.endIndex);
-      spans.add(WidgetSpan(
-        alignment: PlaceholderAlignment.baseline,
-        baseline: TextBaseline.alphabetic,
-        child: GestureDetector(
-          onTap: () => onWordTap(highlight.word),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            decoration: BoxDecoration(
-              color: _getLevelColor(highlight.level).withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(
-                color: _getLevelColor(highlight.level).withValues(alpha: 0.3),
-                width: 1,
-              ),
-            ),
-            child: Text(
-              word,
-              style: TextStyle(
-                fontSize: _getTextSize(),
-                height: 1.8,
-                color: _getLevelColor(highlight.level),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ),
-      ));
-
-      currentIndex = highlight.endIndex;
-    }
-
-    // Add remaining text after last highlight
-    if (currentIndex < text.length) {
-      spans.add(TextSpan(
-        text: text.substring(currentIndex),
-        style: TextStyle(
-          fontSize: _getTextSize(),
-          height: 1.8,
-          color: textColor,
-        ),
-      ));
+      charIndex += word.length;
     }
 
     return Text.rich(
@@ -232,18 +256,9 @@ class PageViewWidget extends StatelessWidget {
   }
 
   Color _getLevelColor(String? level) {
-    switch (level?.toUpperCase()) {
-      case 'A1':
-        return AppColors.levelA1;
-      case 'A2':
-        return AppColors.levelA2;
-      case 'B1':
-        return AppColors.levelB1;
-      case 'B2':
-        return AppColors.levelB2;
-      default:
-        return AppColors.primary;
-    }
+    // Removed since level is no longer in VocabularyHighlight
+    // Return default primary color
+    return AppColors.primary;
   }
 
   Widget _buildAudioButton(BuildContext context) {

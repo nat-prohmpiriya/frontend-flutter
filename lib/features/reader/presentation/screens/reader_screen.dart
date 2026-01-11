@@ -230,7 +230,7 @@ class _ReaderScreenState extends ConsumerState<ReaderScreen> {
             // Overlay controls
             OverlayControls(
               isVisible: readerState.showOverlayControls,
-              title: story.title.en,
+              title: story.title['en'] ?? '',
               currentEpisode: readerState.currentEpisode,
               totalEpisodes: story.episodes.length,
               currentPage: readerState.currentPage,

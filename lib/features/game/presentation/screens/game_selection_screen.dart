@@ -178,7 +178,7 @@ class GameSelectionScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  episode.title.en,
+                  episode.title['en'] ?? '',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -189,7 +189,7 @@ class GameSelectionScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  episode.title.th,
+                  episode.title['th'] ?? '',
                   style: const TextStyle(
                     fontSize: 14,
                     color: AppColors.textSecondary,

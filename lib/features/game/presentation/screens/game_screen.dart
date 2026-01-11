@@ -407,25 +407,30 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     for (int i = 0; i < vocabulary.length && i < 10; i++) {
       final word = vocabulary[i];
 
-      // Get 3 wrong options
+      // Get correct answer from translation or definition (both may be null)
+      final correctAnswer = word.translations?['th'] ??
+          word.definition ??
+          word.word;
+
+      // Get 3 wrong options (filter out nulls)
       final wrongOptions = vocabulary
           .where((v) => v.word != word.word)
+          .map((v) => v.translations?['th'] ?? v.definition ?? v.word)
+          .where((ans) => ans != correctAnswer)
           .take(3)
-          .map((v) => v.translations?['th'] ?? v.definition)
           .toList();
 
       if (wrongOptions.length < 3) continue;
 
-      final correctAnswer = word.translations?['th'] ?? word.definition;
       final options = [correctAnswer, ...wrongOptions]..shuffle();
 
       questions.add(Question(
         id: 'gen-$i',
-        questionText: 'What is the meaning of "${word.word}"?',
+        question: 'What is the meaning of "${word.word}"?',
         audioUrl: word.audioUrl,
         options: options,
-        correctIndex: options.indexOf(correctAnswer),
-        explanation: word.definition,
+        correctAnswer: correctAnswer,
+        explanation: word.definition ?? 'Correct answer: $correctAnswer',
       ));
     }
 

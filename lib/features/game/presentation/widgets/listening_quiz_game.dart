@@ -169,7 +169,7 @@ class _ListeningQuizGameState extends ConsumerState<ListeningQuizGame> {
                         ref,
                         index: index,
                         option: currentQuestion.options[index],
-                        correctIndex: currentQuestion.correctIndex,
+                        correctAnswer: currentQuestion.correctAnswer,
                         gameState: gameState,
                       ),
                     ),
@@ -321,11 +321,11 @@ class _ListeningQuizGameState extends ConsumerState<ListeningQuizGame> {
     WidgetRef ref, {
     required int index,
     required String option,
-    required int correctIndex,
+    required String correctAnswer,
     required GameState gameState,
   }) {
     final gameNotifier = ref.read(gameProvider.notifier);
-    final isCorrect = index == correctIndex;
+    final isCorrect = option == correctAnswer;
     final isSelected = gameState.selectedAnswerIndex == index;
     final isAnswered = gameState.isAnswered;
 

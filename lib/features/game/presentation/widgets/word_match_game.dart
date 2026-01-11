@@ -46,12 +46,11 @@ class WordMatchGame extends ConsumerWidget {
     }
 
     // Get words and definitions
-    final words = gameState.questions.map((q) => q.questionText).toList();
+    final words = gameState.questions.map((q) => q.question).toList();
     final definitions = gameState.shuffledDefinitions.isNotEmpty
         ? gameState.shuffledDefinitions
         : gameState.questions
-            .map((q) =>
-                q.options.isNotEmpty ? q.options[q.correctIndex] : '')
+            .map((q) => q.correctAnswer)
             .toList();
 
     return Scaffold(

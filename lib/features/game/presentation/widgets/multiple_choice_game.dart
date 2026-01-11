@@ -92,7 +92,7 @@ class MultipleChoiceGame extends ConsumerWidget {
                     children: [
                       // Question text
                       Text(
-                        currentQuestion.questionText,
+                        currentQuestion.question,
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -111,7 +111,7 @@ class MultipleChoiceGame extends ConsumerWidget {
                           ref,
                           index: index,
                           option: currentQuestion.options[index],
-                          correctIndex: currentQuestion.correctIndex,
+                          correctAnswer: currentQuestion.correctAnswer,
                           gameState: gameState,
                         ),
                       ),
@@ -196,12 +196,12 @@ class MultipleChoiceGame extends ConsumerWidget {
     WidgetRef ref, {
     required int index,
     required String option,
-    required int correctIndex,
+    required String correctAnswer,
     required GameState gameState,
   }) {
     final gameNotifier = ref.read(gameProvider.notifier);
     final isEliminated = gameState.eliminatedOptions.contains(index);
-    final isCorrect = index == correctIndex;
+    final isCorrect = option == correctAnswer;
     final isSelected = gameState.selectedAnswerIndex == index;
     final isAnswered = gameState.isAnswered;
 

@@ -44,7 +44,7 @@ final class GameNotifierProvider
   }
 }
 
-String _$gameNotifierHash() => r'ca181ca3d9f8b877464349788ea51102b5e62acd';
+String _$gameNotifierHash() => r'5434ef55586aa9ee83daf358159031e8103acbda';
 
 /// Game notifier for managing game logic
 

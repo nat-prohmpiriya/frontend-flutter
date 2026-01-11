@@ -66,7 +66,7 @@ class GameNotifier extends _$GameNotifier {
     List<String> shuffledDefs = [];
     if (type == GameType.wordMatch && questions.isNotEmpty) {
       // Use the question options as definitions for word match
-      shuffledDefs = questions.map((q) => q.options.isNotEmpty ? q.options[q.correctIndex] : '').toList();
+      shuffledDefs = questions.map((q) => q.options.isNotEmpty ? q.correctAnswer : '').toList();
       shuffledDefs.shuffle(Random());
     }
 
@@ -103,7 +103,8 @@ class GameNotifier extends _$GameNotifier {
     if (state.isAnswered || state.isGameOver) return;
 
     final currentQuestion = state.questions[state.currentQuestionIndex];
-    final isCorrect = index == currentQuestion.correctIndex;
+    final selectedAnswer = currentQuestion.options[index];
+    final isCorrect = selectedAnswer == currentQuestion.correctAnswer;
 
     final answerRecord = AnswerRecord(
       questionId: currentQuestion.id,
@@ -129,7 +130,7 @@ class GameNotifier extends _$GameNotifier {
     final wrongIndices = <int>[];
 
     for (int i = 0; i < currentQuestion.options.length; i++) {
-      if (i != currentQuestion.correctIndex) {
+      if (currentQuestion.options[i] != currentQuestion.correctAnswer) {
         wrongIndices.add(i);
       }
     }
@@ -202,17 +203,15 @@ class GameNotifier extends _$GameNotifier {
 
     // Find if this is a correct match
     final question = state.questions.firstWhere(
-      (q) => q.questionText == selectedWord,
+      (q) => q.question == selectedWord,
       orElse: () => const Question(
         id: '',
-        questionText: '',
-        correctIndex: -1,
+        question: '',
+        correctAnswer: '',
       ),
     );
 
-    final correctDef = question.options.isNotEmpty
-        ? question.options[question.correctIndex]
-        : '';
+    final correctDef = question.correctAnswer;
 
     if (definition == correctDef) {
       // Correct match

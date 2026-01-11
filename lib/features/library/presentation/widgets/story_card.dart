@@ -34,12 +34,12 @@ class StoryCard extends StatelessWidget {
 
   /// Get localized title based on locale
   String _getLocalizedTitle() {
-    return locale == 'th' ? story.title.th : story.title.en;
+    return locale == 'th' ? (story.title['th'] ?? '') : (story.title['en'] ?? '');
   }
 
   /// Get secondary title (other language)
   String _getSecondaryTitle() {
-    return locale == 'th' ? story.title.en : story.title.th;
+    return locale == 'th' ? (story.title['en'] ?? '') : (story.title['th'] ?? '');
   }
 
   @override
@@ -71,8 +71,9 @@ class StoryCard extends StatelessWidget {
             _buildCoverImage(isDark),
             // Content
             Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.fromLTRB(10, 10, 10, 8),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Title
@@ -83,11 +84,12 @@ class StoryCard extends StatelessWidget {
                       color: isDark
                           ? AppColors.darkTextPrimary
                           : AppColors.textPrimary,
+                      height: 1.2,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   // Secondary title
                   Text(
                     _getSecondaryTitle(),
@@ -95,14 +97,15 @@ class StoryCard extends StatelessWidget {
                       color: isDark
                           ? AppColors.darkTextSecondary
                           : AppColors.textSecondary,
+                      height: 1.2,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 6),
                   // Meta info row
                   _buildMetaInfo(theme, isDark),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 6),
                   // Category tag
                   if (story.category.isNotEmpty) _buildCategoryTag(isDark),
                 ],

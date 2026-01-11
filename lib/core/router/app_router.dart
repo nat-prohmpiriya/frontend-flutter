@@ -89,17 +89,7 @@ GoRouter router(Ref ref) {
               ),
             ],
           ),
-          // Statistics branch (index 3)
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: RouteNames.statistics,
-                name: 'statistics',
-                builder: (context, state) => const StatisticsScreen(),
-              ),
-            ],
-          ),
-          // Profile branch (index 4)
+          // Profile branch (index 3)
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -143,6 +133,13 @@ GoRouter router(Ref ref) {
           final episode = int.tryParse(state.pathParameters['episode'] ?? '1') ?? 1;
           return GameScreen(storySlug: slug, episodeNumber: episode);
         },
+      ),
+      // Statistics route (outside shell - no bottom nav, accessible via links)
+      GoRoute(
+        path: RouteNames.statistics,
+        name: 'statistics',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) => const StatisticsScreen(),
       ),
       // Album detail route (outside shell - no bottom nav)
       GoRoute(

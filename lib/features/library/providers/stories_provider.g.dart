@@ -14,7 +14,10 @@ const storiesFilterProvider = StoriesFilterProvider._();
 
 final class StoriesFilterProvider
     extends
-        $NotifierProvider<StoriesFilter, ({String? category, String? level})> {
+        $NotifierProvider<
+          StoriesFilter,
+          ({String? category, String? level, String? search})
+        > {
   const StoriesFilterProvider._()
     : super(
         from: null,
@@ -34,21 +37,24 @@ final class StoriesFilterProvider
   StoriesFilter create() => StoriesFilter();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(({String? category, String? level}) value) {
+  Override overrideWithValue(
+    ({String? category, String? level, String? search}) value,
+  ) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<({String? category, String? level})>(
-        value,
-      ),
+      providerOverride:
+          $SyncValueProvider<
+            ({String? category, String? level, String? search})
+          >(value),
     );
   }
 }
 
-String _$storiesFilterHash() => r'1d3808b319bf909a56934cfe5d6f7be31a0a6b18';
+String _$storiesFilterHash() => r'682d5e1bed919e8f877e067e4d130733288142d1';
 
 abstract class _$StoriesFilter
-    extends $Notifier<({String? category, String? level})> {
-  ({String? category, String? level}) build();
+    extends $Notifier<({String? category, String? level, String? search})> {
+  ({String? category, String? level, String? search}) build();
   @$mustCallSuper
   @override
   void runBuild() {
@@ -56,17 +62,17 @@ abstract class _$StoriesFilter
     final ref =
         this.ref
             as $Ref<
-              ({String? category, String? level}),
-              ({String? category, String? level})
+              ({String? category, String? level, String? search}),
+              ({String? category, String? level, String? search})
             >;
     final element =
         ref.element
             as $ClassProviderElement<
               AnyNotifier<
-                ({String? category, String? level}),
-                ({String? category, String? level})
+                ({String? category, String? level, String? search}),
+                ({String? category, String? level, String? search})
               >,
-              ({String? category, String? level}),
+              ({String? category, String? level, String? search}),
               Object?,
               Object?
             >;
@@ -111,7 +117,7 @@ final class StoriesProvider
   }
 }
 
-String _$storiesHash() => r'2c0370388f04d769a0b4c8512f49a3a46a1537d5';
+String _$storiesHash() => r'c57f85b9a1984d8dc6912a4ceb940ec891b8b898';
 
 @ProviderFor(storyDetail)
 const storyDetailProvider = StoryDetailFamily._();

@@ -7,18 +7,23 @@ part 'stories_provider.g.dart';
 @riverpod
 class StoriesFilter extends _$StoriesFilter {
   @override
-  ({String? level, String? category}) build() => (level: null, category: null);
+  ({String? level, String? category, String? search}) build() =>
+      (level: null, category: null, search: null);
 
   void setLevel(String? level) {
-    state = (level: level, category: state.category);
+    state = (level: level, category: state.category, search: state.search);
   }
 
   void setCategory(String? category) {
-    state = (level: state.level, category: category);
+    state = (level: state.level, category: category, search: state.search);
+  }
+
+  void setSearch(String? search) {
+    state = (level: state.level, category: state.category, search: search);
   }
 
   void clear() {
-    state = (level: null, category: null);
+    state = (level: null, category: null, search: null);
   }
 }
 
@@ -30,6 +35,7 @@ Future<List<Story>> stories(Ref ref) async {
   return repository.getStories(
     level: filter.level,
     category: filter.category,
+    search: filter.search,
   );
 }
 

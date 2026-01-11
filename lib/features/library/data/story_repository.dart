@@ -18,6 +18,7 @@ class StoryRepository {
   Future<List<Story>> getStories({
     String? level,
     String? category,
+    String? search,
     int limit = 20,
     int offset = 0,
   }) async {
@@ -26,6 +27,7 @@ class StoryRepository {
       queryParameters: {
         if (level != null && level.isNotEmpty) 'level': level,
         if (category != null && category.isNotEmpty) 'category': category,
+        if (search != null && search.isNotEmpty) 'search': search,
         'limit': limit,
         'offset': offset,
       },

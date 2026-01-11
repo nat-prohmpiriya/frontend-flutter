@@ -39,16 +39,17 @@ class HomeScreen extends ConsumerWidget {
               _SummaryStats(user: user),
               const SizedBox(height: 24),
               // Mode Cards Grid
-              _ModeCard(
-                icon: Icons.auto_awesome,
-                title: 'For You',
-                description: 'Personalized stories based on your level',
-                gradient: const [Color(0xFFEC4899), Color(0xFFF43F5E)],
-                onTap: () {
-                  // TODO: Navigate to for-you
-                },
-              ),
-              const SizedBox(height: 16),
+              // For You card - temporarily disabled
+              // _ModeCard(
+              //   icon: Icons.auto_awesome,
+              //   title: 'For You',
+              //   description: 'Personalized stories based on your level',
+              //   gradient: const [Color(0xFFEC4899), Color(0xFFF43F5E)],
+              //   onTap: () {
+              //     // TODO: Navigate to for-you
+              //   },
+              // ),
+              // const SizedBox(height: 16),
               _ModeCard(
                 icon: Icons.menu_book,
                 title: 'Library',

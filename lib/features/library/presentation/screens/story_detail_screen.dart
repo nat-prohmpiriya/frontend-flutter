@@ -213,7 +213,7 @@ class _StoryDetailContent extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        story.title.en,
+                        story.title['en'] ?? '',
                         style: theme.textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: isDark
@@ -246,7 +246,7 @@ class _StoryDetailContent extends StatelessWidget {
                 const SizedBox(height: 8),
                 // Thai title
                 Text(
-                  story.title.th,
+                  story.title['th'] ?? '',
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: isDark
                         ? AppColors.darkTextSecondary
@@ -433,8 +433,7 @@ class _EpisodeCard extends StatelessWidget {
           onTap: isLocked
               ? null
               : () {
-                  // TODO: Navigate to reader
-                  context.push('/story/$storySlug/ep/${episode.episodeNumber}');
+                  context.push('/reader/$storySlug?ep=${episode.episodeNumber}');
                 },
           borderRadius: BorderRadius.circular(12),
           child: Container(
@@ -506,10 +505,10 @@ class _EpisodeCard extends StatelessWidget {
                                   : AppColors.textPrimary,
                         ),
                       ),
-                      if (episode.title.en.isNotEmpty) ...[
+                      if ((episode.title['en'] ?? '').isNotEmpty) ...[
                         const SizedBox(height: 4),
                         Text(
-                          episode.title.en,
+                          episode.title['en'] ?? '',
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: isDark
                                 ? AppColors.darkTextSecondary
